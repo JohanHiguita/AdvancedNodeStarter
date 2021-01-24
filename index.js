@@ -8,9 +8,15 @@ const keys = require('./config/keys');
 require('./models/User');
 require('./models/Blog');
 require('./services/passport');
+require('./services/cache');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongoURI, { useMongoClient: true });
+try {
+  mongoose.connect(keys.mongoURI, { useMongoClient: true }); 
+} catch (error) {
+  console.log(error);
+}
+  
 
 const app = express();
 
