@@ -11,6 +11,10 @@ const exec = mongoose.Query.prototype.exec;
 mongoose.Query.prototype.exec = async function () {
     //this -> Query
 
+    if(!this.useCache){
+        return exec.apply(this, arguments);
+    }
+
     let key = Object.assign({}, this.getFilter(), {
         collection: this.mongooseCollection.name
     });
@@ -41,4 +45,9 @@ mongoose.Query.prototype.exec = async function () {
 
     return result;
     
+}
+
+mongoose.Query.prototype.cache = function() {
+    this.useCache = true;
+    return this; //Helps cache() to be a chainable function
 }
